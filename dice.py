@@ -1,7 +1,36 @@
 import random
+import math
 
-dice = {1, 2, 3, 4, 5, 6}
-dice_amount = int(input('How many dice do you want?: '))
+dice = {1: '-----'
+           '|   |'
+           '| o |'
+           '|   |'
+           '-----', 
+        2: '-----'
+           '|o  |'
+           '|   |'
+           '|  o|'
+           '-----',
+        3: '-----'
+           '|o  |'
+           '| o |'
+           '|  o|'
+           '-----',
+        4: '-----'
+           '|o o|'
+           '|   |'
+           '|o o|'
+           '-----',
+        5: '-----'
+           '|o o|'
+           '| o |'
+           '|o o|'
+           '-----', 
+        6: '-----'
+           '|o o|'
+           '|o o|'
+           '|o o|'
+           '-----'}
 
-def roll_dice():
-    result = int(round(random.random() * 5))
+result = int(math.floor(random.random() * 5.99) + 1)
+print(dice.get(result))
