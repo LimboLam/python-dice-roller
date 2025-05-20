@@ -1,36 +1,49 @@
 import random
-import math
 
-dice = {1: '-------\n'
-           '|     |\n'
-           '|  o  |\n'
-           '|     |\n'
-           '-------', 
-        2: '-------\n'
-           '|o    |\n'
-           '|     |\n'
-           '|    o|\n'
-           '-------',
-        3: '-------\n'
-           '|o    |\n'
-           '|  o  |\n'
-           '|    o|\n'
-           '-------',
-        4: '-------\n'
-           '|o   o|\n'
-           '|     |\n'
-           '|o   o|\n'
-           '-------',
-        5: '-------\n'
-           '|o   o|\n'
-           '|  o  |\n'
-           '|o   o|\n'
-           '-------', 
-        6: '-------\n'
-           '|o   o|\n'
-           '|o   o|\n'
-           '|o   o|\n'
-           '-------'}
+dice_art = {1: 
+           ('-------',
+           '|     |',
+           '|  o  |',
+           '|     |',
+           '-------'), 
+        2: ('-------',
+           '|o    |',
+           '|     |',
+           '|    o|',
+           '-------'),
+        3: ('-------',
+           '|o    |',
+           '|  o  |',
+           '|    o|',
+           '-------'),
+        4: ('-------',
+           '|o   o|',
+           '|     |',
+           '|o   o|',
+           '-------'),
+        5: ('-------',
+           '|o   o|',
+           '|  o  |',
+           '|o   o|',
+           '-------'), 
+        6: ('-------',
+           '|o   o|',
+           '|o   o|',
+           '|o   o|',
+           '-------')}
 
-result = int(math.floor(random.random() * 5.99) + 1)
-print(dice.get(result))
+dice = []
+dice_amount = int(input('How many dice?: '))
+total = 0
+
+for die in range(dice_amount):
+   dice.append(random.randint(1, 6))
+
+for die in range(dice_amount):
+   for line in dice_art.get(dice[die]):
+      print(line)
+
+for die in dice:
+   total += die
+
+print(total)
