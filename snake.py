@@ -15,14 +15,25 @@ def main():
             self.color = color
             self.size = size
 
-        def draw(self, window):
-            pygame.draw.rect(window, self.color, (self.x, self.y, self.size, self.size))
+        def draw(self, screen):
+            pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
         def move(self, dx, dy):
             self.x += dx
             self.y += dy
 
+    class Apple:
+        def __init__(self, x, y, size, color):
+            self.x = x
+            self.y = y
+            self.color = color
+            self.size = size
+
+        def draw(self, screen):
+            pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
+
     snake = Snake(640, 360, 20, (0, 255, 0))
+    apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
 
     clock = pygame.time.Clock()
 
@@ -47,10 +58,11 @@ def main():
 
             screen.fill((0, 0, 0))
             snake.draw(screen)
+            apple.draw(screen)
             pygame.display.flip()
             
     pygame.quit()
     sys.exit()
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     main()
