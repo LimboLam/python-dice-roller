@@ -1,50 +1,56 @@
-VERSION = "0.4"
+import pygame
+import sys
+import random
 
-try:
-    import sys
-    import random
-    import math
-    import os
-    import getopt
-    import pygame
-    from socket import *
-    from pygame.locals import *
-except ImportError as err:
-    print(f"couldn't load module. {err}")
-    sys.exit(2)
+def main():
+    pygame.init()
+    width, height = (1280, 720)
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Snake")
 
-def load_png(name):
-    """ Load image and return image object"""
-    fullname = os.path.join("data", name)
-    try:
-        image = pygame.image.load(fullname)
-        if image.get_alpha() is None:
-            image = image.convert()
-        else:
-            image = image.convert_alpha()
-    except FileNotFoundError:
-        print(f"Cannot load image: {fullname}")
-        raise SystemExit
-    return image, image.get_rect()
+    class Snake:
+        def __init__(self, x, y, size, color):
+            self.x = x
+            self.y = y
+            self.color = color
+            self.size = size
 
-class Ball(pygame.sprite.Sprite):
-    """A ball that will move across the screen
-    Returns: ball object
-    Functions: update, calcnewpos
-    Attributes: area, vector"""
+        def draw(self, window):
+            pygame.draw.rect(window, self.color, (self.x, self.y, self.size, self.size))
 
-    def __init__(self, vector):
-        pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_png('ball.png')
-        screen = pygame.display.get_surface()
-        self.area = screen.get_rect()
-        self.vector = vector
+        def move(self, dx, dy):
+            self.x += dx
+            self.y += dy
 
-    def update(self):
-        newpos = self.calcnewpos(self.rect,self.vector)
-        self.rect = newpos
+    snake = Snake(640, 360, 20, (0, 255, 0))
 
-    def calcnewpos(self,rect,vector):
-        (angle,z) = vector
-        (dx,dy) = (z*math.cos(angle),z*math.sin(angle))
-        return rect.move(dx,dy)
+    clock = pygame.time.Clock()
+
+    running = True
+    speed = 5
+    
+    while running:
+        clock.tick(30)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a]:
+                snake.move(-speed, 0)
+            if keys[pygame.K_d]:
+                snake.move(speed, 0)
+            if keys[pygame.K_w]:
+                snake.move(0, -speed)
+            if keys[pygame.K_s]:
+                snake.move(0, speed)
+
+            screen.fill((0, 0, 0))
+            snake.draw(screen)
+            pygame.display.flip()
+            
+    pygame.quit()
+    sys.exit()
+
+if __name__ == '__main__': 
+    main()
