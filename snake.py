@@ -39,10 +39,7 @@ def main():
 
     running = True
     speed = 5
-    key_a = False
-    key_w = False
-    key_s = False
-    key_d = False
+    direction = None
     
     while running:
         clock.tick(30)
@@ -52,39 +49,27 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
-                    key_a = True
-                    key_w = False
-                    key_s = False
-                    key_d = False
+                    direction = 'left'
                 if event.key == pygame.K_w:
-                    key_a = False
-                    key_w = True
-                    key_s = False
-                    key_d = False
+                    direction = 'up'
                 if event.key == pygame.K_s:
-                    key_a = False
-                    key_w = False
-                    key_s = True
-                    key_d = False
+                    direction = 'down'
                 if event.key == pygame.K_d:
-                    key_a = False
-                    key_w = False
-                    key_s = False
-                    key_d = True
+                    direction = 'right'
 
-            if key_a == True:
-                snake.move(-speed, 0)
-            if key_w == True:
-                snake.move(0, -speed)
-            if key_s == True:
-                snake.move(0, speed)
-            if key_d == True:
-                snake.move(speed, 0)
+        if direction == 'left':
+            snake.move(-speed, 0)
+        elif direction == 'up':
+            snake.move(0, -speed)
+        elif direction == 'down':
+            snake.move(0, speed)
+        elif direction == 'right':
+            snake.move(speed, 0)
 
-            screen.fill((0, 0, 0))
-            snake.draw(screen)
-            apple.draw(screen)
-            pygame.display.flip()
+        screen.fill((0, 0, 0))
+        snake.draw(screen)
+        apple.draw(screen)
+        pygame.display.flip()
             
     pygame.quit()
     sys.exit()
