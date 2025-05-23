@@ -8,7 +8,7 @@ def main():
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Snake")
 
-    class Snake:
+    class Snake(pygame.sprite.Sprite):
         def __init__(self, x, y, size, color):
             self.x = x
             self.y = y
@@ -22,7 +22,7 @@ def main():
             self.x += dx
             self.y += dy
 
-    class Apple:
+    class Apple(pygame.sprite.Sprite):
         def __init__(self, x, y, size, color):
             self.x = x
             self.y = y
@@ -39,6 +39,10 @@ def main():
 
     running = True
     speed = 5
+    key_a = False
+    key_w = False
+    key_s = False
+    key_d = False
     
     while running:
         clock.tick(30)
@@ -46,15 +50,36 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_a]:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    key_a = True
+                    key_w = False
+                    key_s = False
+                    key_d = False
+                if event.key == pygame.K_w:
+                    key_a = False
+                    key_w = True
+                    key_s = False
+                    key_d = False
+                if event.key == pygame.K_s:
+                    key_a = False
+                    key_w = False
+                    key_s = True
+                    key_d = False
+                if event.key == pygame.K_d:
+                    key_a = False
+                    key_w = False
+                    key_s = False
+                    key_d = True
+
+            if key_a == True:
                 snake.move(-speed, 0)
-            if keys[pygame.K_d]:
-                snake.move(speed, 0)
-            if keys[pygame.K_w]:
+            if key_w == True:
                 snake.move(0, -speed)
-            if keys[pygame.K_s]:
+            if key_s == True:
                 snake.move(0, speed)
+            if key_d == True:
+                snake.move(speed, 0)
 
             screen.fill((0, 0, 0))
             snake.draw(screen)
