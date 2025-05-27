@@ -33,16 +33,17 @@ def main():
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
     snake = Snake(640, 360, 20, (0, 255, 0))
+    snakePlus = Snake(snake.x - 20, snake.y, 20, (0, 255, 0))
     apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
 
     clock = pygame.time.Clock()
 
     running = True
-    speed = 5
+    speed = 20
     direction = None
     
     while running:
-        clock.tick(30)
+        clock.tick(15)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -66,8 +67,32 @@ def main():
         elif direction == 'right':
             snake.move(speed, 0)
 
+        if snake.x == apple.x:
+            if snake.y == apple.y:
+                twenty = 20
+                apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
+                # if direction == 'left':
+                #     snakePlus = Snake(snake.x + twenty, snake.y, twenty, (0, 255, 0))
+                # elif direction == 'right':
+                #     snakePlus = Snake(snake.x - twenty, snake.y, twenty, (0, 255, 0))
+                # elif direction == 'up':
+                #     snakePlus = Snake(snake.x, snake.y - twenty, twenty, (0, 255, 0))
+                # elif direction == 'down':
+                #     snakePlus = Snake(snake.x, snake.y + twenty, twenty, (0, 255, 0))
+                twenty += 20
+
+        if snake.x > width:
+            running = False
+        elif snake.x < 0:
+            running = False
+        elif snake.y > height:
+            running = False
+        elif snake.y < 0:
+            running = False
+
         screen.fill((0, 0, 0))
         snake.draw(screen)
+        snakePlus.draw(screen)
         apple.draw(screen)
         pygame.display.flip()
             
