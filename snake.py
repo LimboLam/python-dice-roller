@@ -32,9 +32,10 @@ def main():
         def draw(self, screen):
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
-    snake = Snake(640, 360, 20, (0, 255, 0))
-    snakePlus = Snake(snake.x - 20, snake.y, 20, (0, 255, 0))
     apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
+    snake = {0: Snake(640, 360, 20, (0, 255, 0))}
+    counter = 0
+    twenty = 20
 
     clock = pygame.time.Clock()
 
@@ -50,50 +51,61 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
-                    direction = 'left'
+                    if direction == 'right':
+                        direction == 'right'
+                    else:
+                        direction = 'left'
                 if event.key == pygame.K_w:
-                    direction = 'up'
+                    if direction == 'down':
+                        direction == 'down'
+                    else:
+                        direction = 'up'
                 if event.key == pygame.K_s:
-                    direction = 'down'
+                    if direction == 'up':
+                        direction == 'up'
+                    else:
+                        direction = 'down'
                 if event.key == pygame.K_d:
-                    direction = 'right'
+                    if direction == 'left':
+                        direction == 'left'
+                    else:
+                        direction = 'right'
 
         if direction == 'left':
-            snake.move(-speed, 0)
+            snake.get(0).move(-speed, 0)
         elif direction == 'up':
-            snake.move(0, -speed)
+            snake.get(0).move(0, -speed)
         elif direction == 'down':
-            snake.move(0, speed)
+            snake.get(0).move(0, speed)
         elif direction == 'right':
-            snake.move(speed, 0)
+            snake.get(0).move(speed, 0)
 
-        if snake.x == apple.x:
-            if snake.y == apple.y:
-                twenty = 20
+        if snake.get(0).x == apple.x:
+            if snake.get(0).y == apple.y:
                 apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
-                # if direction == 'left':
-                #     snakePlus = Snake(snake.x + twenty, snake.y, twenty, (0, 255, 0))
-                # elif direction == 'right':
-                #     snakePlus = Snake(snake.x - twenty, snake.y, twenty, (0, 255, 0))
-                # elif direction == 'up':
-                #     snakePlus = Snake(snake.x, snake.y - twenty, twenty, (0, 255, 0))
-                # elif direction == 'down':
-                #     snakePlus = Snake(snake.x, snake.y + twenty, twenty, (0, 255, 0))
-                twenty += 20
+                counter += 1
+                if direction == 'left':
+                    snake[counter] = Snake(snake.get(counter - 1).x + twenty, snake.get(counter - 1).y, 20, (0, 255, 0))
+                elif direction == 'right':
+                    snake[counter] = Snake(snake.get(counter - 1).x - twenty, snake.get(counter - 1).y, 20, (0, 255, 0))
+                elif direction == 'up':
+                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y + twenty, 20, (0, 255, 0))
+                elif direction == 'down':
+                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y - twenty, 20, (0, 255, 0))
 
-        if snake.x > width:
+        if snake.get(0).x > width:
             running = False
-        elif snake.x < 0:
+        elif snake.get(0).x < 0:
             running = False
-        elif snake.y > height:
+        elif snake.get(0).y > height:
             running = False
-        elif snake.y < 0:
+        elif snake.get(0).y < 0:
             running = False
 
         screen.fill((0, 0, 0))
-        snake.draw(screen)
-        snakePlus.draw(screen)
         apple.draw(screen)
+        for key in snake:
+            snake.get(key).draw(screen)
         pygame.display.flip()
             
     pygame.quit()
