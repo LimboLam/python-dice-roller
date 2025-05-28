@@ -113,3 +113,29 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# ChatGPT input cooldown
+
+# pygame.init()
+# screen = pygame.display.set_mode((400, 300))
+# clock = pygame.time.Clock()
+# running = True
+
+# # Cooldown settings
+# input_cooldown = 500  # milliseconds
+# last_input_time = 0
+
+# while running:
+#     current_time = pygame.time.get_ticks()
+
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#         if event.type == pygame.KEYDOWN:
+#             if current_time - last_input_time > input_cooldown:
+#                 print("Accepted input")
+#                 last_input_time = current_time
+
+#     screen.fill((30, 30, 30))
+#     pygame.display.flip()
+#     clock.tick(60)
