@@ -131,6 +131,10 @@ def main():
             running = False
         elif snakeHead.y < 0:
             running = False
+        for snake in snakeBod:
+            if snakeHead.x == snakeBod[snake].x:
+                if snakeHead.y == snakeBod[snake].y:
+                    running = False
 
         screen.fill((0, 0, 0))
         apple.draw(screen)
