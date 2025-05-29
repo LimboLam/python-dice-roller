@@ -33,7 +33,8 @@ def main():
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
     apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
-    snake = {0: Snake(640, 360, 20, (0, 255, 0))}
+    snakeHead = Snake(640, 360, 20, (0, 255, 0))
+    snakeBod = {}
     score = 0
     font = pygame.font.Font(None, 36)
     text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
@@ -79,54 +80,66 @@ def main():
 
         
         if direction == 'left':
-            snake.get(0).move(-speed, 0)
-            snakePosX.append((snake.get(0).x))
-            snakePosY.append((snake.get(0).y))
+            snakeHead.move(-speed, 0)
+            snakePosX.append((snakeHead.x))
+            snakePosY.append((snakeHead.y))
         elif direction == 'up':
-            snake.get(0).move(0, -speed)
-            snakePosX.append((snake.get(0).x))
-            snakePosY.append((snake.get(0).y))
+            snakeHead.move(0, -speed)
+            snakePosX.append((snakeHead.x))
+            snakePosY.append((snakeHead.y))
         elif direction == 'down':
-            snake.get(0).move(0, speed)
-            snakePosX.append((snake.get(0).x))
-            snakePosY.append((snake.get(0).y))
+            snakeHead.move(0, speed)
+            snakePosX.append((snakeHead.x))
+            snakePosY.append((snakeHead.y))
         elif direction == 'right':
-            snake.get(0).move(speed, 0)
-            snakePosX.append((snake.get(0).x))
-            snakePosY.append((snake.get(0).y))
+            snakeHead.move(speed, 0)
+            snakePosX.append((snakeHead.x))
+            snakePosY.append((snakeHead.y))
 
-        if snake.get(0).x == apple.x:
-            if snake.get(0).y == apple.y:
+        if snakeHead.x == apple.x:
+            if snakeHead.y == apple.y:
                 apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
                 score += 1
-                counter += 1
                 if direction == 'left':
-                    snake[counter] = Snake(snake.get(counter - 1).x + 20, snake.get(counter - 1).y, 20, (0, 255, 0))
+                    if len(snakeBod) == 0:
+                        snakeBod[0] = Snake(snakeHead.x + 20, snakeHead.y, 20, (0, 255, 0))
+                    else:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x + 20, snakeBod.get(counter - 1).y, 20, (0, 255, 0))
                 elif direction == 'right':
-                    snake[counter] = Snake(snake.get(counter - 1).x - 20, snake.get(counter - 1).y, 20, (0, 255, 0))
+                    if len(snakeBod) == 0:
+                        snakeBod[0] = Snake(snakeHead.x - 20, snakeHead.y, 20, (0, 255, 0))
+                    else:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x - 20, snakeBod.get(counter - 1).y, 20, (0, 255, 0))
                 elif direction == 'up':
-                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y + 20, 20, (0, 255, 0))
+                    if len(snakeBod) == 0:
+                        snakeBod[0] = Snake(snakeHead.x, snakeHead.y + 20, 20, (0, 255, 0))
+                    else:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x, snakeBod.get(counter - 1).y + 20, 20, (0, 255, 0))
                 elif direction == 'down':
-                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y - 20, 20, (0, 255, 0))
+                    if len(snakeBod) == 0:
+                        snakeBod[0] = Snake(snakeHead.x, snakeHead.y - 20, 20, (0, 255, 0))
+                    else:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x, snakeBod.get(counter - 1).y - 20, 20, (0, 255, 0))
                 text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
-                eatApple = True
+                counter += 1
 
-        if snake.get(0).x > width:
+        if snakeHead.x > width:
             running = False
-        elif snake.get(0).x < 0:
+        elif snakeHead.x < 0:
             running = False
-        elif snake.get(0).y > height:
+        elif snakeHead.y > height:
             running = False
-        elif snake.get(0).y < 0:
+        elif snakeHead.y < 0:
             running = False
 
         screen.fill((0, 0, 0))
         apple.draw(screen)
-        for key in snake:
-            snake.get(key).draw(screen)
-            if eatApple == True:
-                snake.get(key).x = snakePosX[len(snakePosX) - key - 1]
-                snake.get(key).y = snakePosY[len(snakePosY) - key - 1]
+        snakeHead.draw(screen)
+        if len(snakeBod) > 0:
+            for key in snakeBod:
+                snakeBod.get(key).draw(screen)
+                snakeBod.get(key).x = snakePosX[len(snakePosX) - key - 1]
+                snakeBod.get(key).y = snakePosY[len(snakePosY) - key - 1]
         screen.blit(text_surface, text_rect)
         pygame.display.flip()
             
