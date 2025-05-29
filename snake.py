@@ -34,8 +34,14 @@ def main():
 
     apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
     snake = {0: Snake(640, 360, 20, (0, 255, 0))}
+    score = 0
+    font = pygame.font.Font(None, 36)
+    text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
+    text_rect = text_surface.get_rect(center=(75, 40))
     counter = 0
-    twenty = 20
+    snakePosX = [640]
+    snakePosY = [360]
+    eatApple = False
 
     clock = pygame.time.Clock()
 
@@ -71,27 +77,39 @@ def main():
                     else:
                         direction = 'right'
 
+        
         if direction == 'left':
             snake.get(0).move(-speed, 0)
+            snakePosX.append((snake.get(0).x))
+            snakePosY.append((snake.get(0).y))
         elif direction == 'up':
             snake.get(0).move(0, -speed)
+            snakePosX.append((snake.get(0).x))
+            snakePosY.append((snake.get(0).y))
         elif direction == 'down':
             snake.get(0).move(0, speed)
+            snakePosX.append((snake.get(0).x))
+            snakePosY.append((snake.get(0).y))
         elif direction == 'right':
             snake.get(0).move(speed, 0)
+            snakePosX.append((snake.get(0).x))
+            snakePosY.append((snake.get(0).y))
 
         if snake.get(0).x == apple.x:
             if snake.get(0).y == apple.y:
                 apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
+                score += 1
                 counter += 1
                 if direction == 'left':
-                    snake[counter] = Snake(snake.get(counter - 1).x + twenty, snake.get(counter - 1).y, 20, (0, 255, 0))
+                    snake[counter] = Snake(snake.get(counter - 1).x + 20, snake.get(counter - 1).y, 20, (0, 255, 0))
                 elif direction == 'right':
-                    snake[counter] = Snake(snake.get(counter - 1).x - twenty, snake.get(counter - 1).y, 20, (0, 255, 0))
+                    snake[counter] = Snake(snake.get(counter - 1).x - 20, snake.get(counter - 1).y, 20, (0, 255, 0))
                 elif direction == 'up':
-                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y + twenty, 20, (0, 255, 0))
+                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y + 20, 20, (0, 255, 0))
                 elif direction == 'down':
-                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y - twenty, 20, (0, 255, 0))
+                    snake[counter] = Snake(snake.get(counter - 1).x, snake.get(counter - 1).y - 20, 20, (0, 255, 0))
+                text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
+                eatApple = True
 
         if snake.get(0).x > width:
             running = False
@@ -106,6 +124,10 @@ def main():
         apple.draw(screen)
         for key in snake:
             snake.get(key).draw(screen)
+            if eatApple == True:
+                snake.get(key).x = snakePosX[len(snakePosX) - key - 1]
+                snake.get(key).y = snakePosY[len(snakePosY) - key - 1]
+        screen.blit(text_surface, text_rect)
         pygame.display.flip()
             
     pygame.quit()
@@ -113,29 +135,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# ChatGPT input cooldown
-
-# pygame.init()
-# screen = pygame.display.set_mode((400, 300))
-# clock = pygame.time.Clock()
-# running = True
-
-# # Cooldown settings
-# input_cooldown = 500  # milliseconds
-# last_input_time = 0
-
-# while running:
-#     current_time = pygame.time.get_ticks()
-
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             running = False
-#         if event.type == pygame.KEYDOWN:
-#             if current_time - last_input_time > input_cooldown:
-#                 print("Accepted input")
-#                 last_input_time = current_time
-
-#     screen.fill((30, 30, 30))
-#     pygame.display.flip()
-#     clock.tick(60)
