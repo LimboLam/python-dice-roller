@@ -33,6 +33,7 @@ def main():
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
     apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
+    goldApp = Apple(random.randrange(0, 1280, 20,), random.randrange(0,720, 20), 20, (166, 135, 16))
     snakeHead = Snake(640, 360, 20, (0, 255, 0))
     snakeBod = {}
     score = 0
@@ -42,7 +43,7 @@ def main():
     counter = 0
     snakePosX = [640]
     snakePosY = [360]
-    eatApple = False
+    eatGapple = False
 
     clock = pygame.time.Clock()
 
@@ -99,6 +100,9 @@ def main():
         if snakeHead.x == apple.x:
             if snakeHead.y == apple.y:
                 apple = Apple(random.randrange(0, 1280, 20), random.randrange(0, 720, 20), 20, (255, 0 ,0))
+                if random.random() < 0.25:
+                    eatGapple = True
+                    goldApp = Apple(random.randrange(0, 1280, 20,), random.randrange(0,720, 20), 20, (166, 135, 16))
                 score += 1
                 if direction == 'left':
                     if len(snakeBod) == 0:
@@ -123,6 +127,37 @@ def main():
                 text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
                 counter += 1
 
+        if snakeHead.x == goldApp.x:
+            if snakeHead.y == goldApp.y:
+                repeat = 0
+                if random.random() <= 0.25:
+                    eatGapple = True
+                    goldApp = Apple(random.randrange(0, 1280, 20,), random.randrange(0, 720, 20), 20, (166, 135, 16))
+                else:
+                    eatGapple = False
+                    goldApp = Apple(-40, -40, 20, (166, 135, 16))
+                score += 5
+                if direction == 'left':
+                    while repeat < 5:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x + 20, snakeBod.get(counter - 1).y, 20, (0, 255, 0))
+                        repeat += 1
+                elif direction == 'right':
+                    while repeat < 5:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x - 20, snakeBod.get(counter - 1).y, 20, (0, 255, 0))
+                        repeat += 1
+                elif direction == 'up':
+                    while repeat < 5:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x, snakeBod.get(counter - 1).y + 20, 20, (0, 255, 0))
+                        repeat += 1
+                elif direction == 'down':
+                    while repeat < 5:
+                        snakeBod[counter] = Snake(snakeBod.get(counter - 1).x, snakeBod.get(counter - 1).y - 20, 20, (0, 255, 0))
+                        repeat += 1
+                repeat = 0
+                text_surface = font.render(f'Score: {score}', True, (255, 255, 255))
+                counter += 1
+
+
         if snakeHead.x > width:
             running = False
         elif snakeHead.x < 0:
@@ -139,6 +174,8 @@ def main():
         screen.fill((0, 0, 0))
         apple.draw(screen)
         snakeHead.draw(screen)
+        if eatGapple == True:
+            goldApp.draw(screen)
         if len(snakeBod) > 0:
             for key in snakeBod:
                 snakeBod.get(key).draw(screen)
