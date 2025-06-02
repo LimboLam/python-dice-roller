@@ -34,7 +34,8 @@ def main():
 
     apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
     goldApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (166, 135, 16))
-    snakeHead = Snake(640, 360, 20, (0, 255, 0))
+    voidApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (13, 0, 34))
+    snakeHead = Snake(width / 2, height / 2, 20, (0, 255, 0))
     snakeBod = {}
     score = 0
     font = pygame.font.Font(None, 36)
@@ -192,6 +193,11 @@ def main():
                 repeat = 0
                 scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
 
+        if snakeHead.x == voidApp.x:
+            if snakeHead.y == voidApp.y:
+                voidApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (13, 0, 34))
+                score = round(score / 2)
+                scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
 
         if snakeHead.x > width:
             dead = True
@@ -212,6 +218,7 @@ def main():
             snakeHead.draw(screen)
             if eatGapple:
                 goldApp.draw(screen)
+            voidApp.draw(screen)
             if len(snakeBod) > 0:
                 for key in snakeBod:
                     snakeBod.get(key).draw(screen)
