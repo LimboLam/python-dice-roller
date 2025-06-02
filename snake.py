@@ -48,10 +48,6 @@ def main():
     snakePosX = [width / 2]
     snakePosY = [height / 2]
     eatGapple = False
-    startTime = 3
-    countdown = startTime
-    startTicks = pygame.time.get_ticks()
-    timeUp = False
     dead = False
 
     clock = pygame.time.Clock()
@@ -107,6 +103,7 @@ def main():
                         snakePosY = [height / 2]
                         eatGapple = False
                         direction = None
+                        speed = 20
                         dead = False
                     elif event.key == pygame.K_q:
                         running = False
@@ -192,13 +189,6 @@ def main():
                         snakeBod[counter] = Snake(snakeBod.get(counter - 1).x, snakeBod.get(counter - 1).y - 20, 20, (0, 255, 0))
                         repeat += 1
                         counter += 1
-                if not timeUp:
-                    secondsPassed = (pygame.time.get_ticks() - startTicks) // 1000
-                    remainingTime = max(0, startTime - secondsPassed)
-                    speed = 40
-                    if remainingTime == 0:
-                        timeUp = True
-                        speed = 20
                 repeat = 0
                 scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
 
