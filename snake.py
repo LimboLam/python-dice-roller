@@ -132,7 +132,7 @@ def main():
                     if snakeBod[bod].x == apple.x:
                         if snakeBod[bod].y == apple.y:
                             apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
-                if random.random() < 1:
+                if random.random() < 0.1:
                     eatGapple = True
                     goldApp = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (166, 135,16))
                 score += 1
