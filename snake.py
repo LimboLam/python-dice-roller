@@ -45,11 +45,16 @@ def main():
     overTopRect = overTopSurface.get_rect(center = (width / 2, 200))
     overBotSurface = font.render('Press R to restart or Q to quit', True, (255, 255, 255))
     overBotRect = overBotSurface.get_rect(center = (width / 2, 450))
+    nameSurface = font.render('SNAKE BUT BETTER', True, (0, 255, 0))
+    nameRect = nameSurface.get_rect(center = (width / 2, 200))
+    startSurface = font.render('Press Enter to start', True, (255, 255, 255))
+    startRect = startSurface.get_rect(center = (width / 2, 450))
     counter = 0
     snakePosX = [width / 2]
     snakePosY = [height / 2]
     eatGapple = False
     dead = False
+    start = True
 
     clock = pygame.time.Clock()
     running = True
@@ -62,7 +67,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     if direction == 'right':
                         direction == 'right'
@@ -84,7 +89,30 @@ def main():
                     else:
                         direction = 'right'
 
-            if dead:
+            elif start:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        start == False
+                        apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
+                        goldApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (166, 135, 16))
+                        snakeHead = Snake(width / 2, height / 2, 20, (0, 255, 0))
+                        snakeBod = {}
+                        score = 0
+                        font = pygame.font.Font(None, 36)
+                        scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
+                        scoreRect = scoreSurface.get_rect(center = (75, 40))
+                        overTopSurface = font.render('Game Over', True, (255, 255, 255))
+                        overTopRect = overTopSurface.get_rect(center = (width / 2, 250))
+                        overBotSurface = font.render('Press R to restart or Q to quit', True, (255, 255, 255))
+                        overBotRect = overBotSurface.get_rect(center = (width / 2, 550))
+                        counter = 0
+                        snakePosX = [width / 2]
+                        snakePosY = [height / 2]
+                        eatGapple = False
+                        direction = None
+                        speed = 20
+
+            elif dead:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
@@ -213,7 +241,15 @@ def main():
                 if snakeHead.y == snakeBod[snake].y:
                     dead = True
 
-        if not dead:
+        if start:
+            screen.fill((0, 0, 0))
+            screen.blit(nameSurface, nameRect)
+            screen.blit(startSurface, startRect)
+        elif dead:
+            screen.fill((0, 0, 0))
+            screen.blit(overTopSurface, overTopRect)
+            screen.blit(overBotSurface, overBotRect)
+        else:
             screen.fill((0, 0, 0))
             apple.draw(screen)
             snakeHead.draw(screen)
@@ -226,10 +262,6 @@ def main():
                     snakeBod.get(key).x = snakePosX[len(snakePosX) - key - 1]
                     snakeBod.get(key).y = snakePosY[len(snakePosY) - key - 1]
             screen.blit(scoreSurface, scoreRect)
-        elif dead:
-            screen.fill((0, 0, 0))
-            screen.blit(overTopSurface, overTopRect)
-            screen.blit(overBotSurface, overBotRect)
         pygame.display.flip()
             
     pygame.quit()
