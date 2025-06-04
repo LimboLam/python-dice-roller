@@ -32,7 +32,7 @@ def main():
         def draw(self, screen):
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
-    apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
+    apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0, 0))
     goldApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (166, 135, 16))
     voidApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (13, 0, 34))
     snakeHead = Snake(width / 2, height / 2, 20, (0, 255, 0))
@@ -89,7 +89,7 @@ def main():
                     if event.key == pygame.K_r:
                         apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
                         goldApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (166, 135, 16))
-                        snakeHead = Snake(640, 360, 20, (0, 255, 0))
+                        snakeHead = Snake(width / 2, height / 2, 20, (0, 255, 0))
                         snakeBod = {}
                         score = 0
                         font = pygame.font.Font(None, 36)
@@ -195,9 +195,10 @@ def main():
 
         if snakeHead.x == voidApp.x:
             if snakeHead.y == voidApp.y:
-                voidApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (13, 0, 34))
-                score = round(score / 2)
-                scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
+                if score < 50:
+                    voidApp = Apple(random.randrange(0, width, 20,), random.randrange(0, height, 20), 20, (13, 0, 34))
+                    score = round(score / 2)
+                    scoreSurface = font.render(f'Score: {score}', True, (255, 255, 255))
 
         if snakeHead.x > width:
             dead = True
