@@ -68,22 +68,22 @@ def main():
                 running = False
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_a or pygame.K_LEFT:
                     if direction == 'right':
                         direction = 'right'
                     else:
                         direction = 'left'
-                elif event.key == pygame.K_w:
+                elif event.key == pygame.K_w or pygame.K_UP:
                     if direction == 'down':
                         direction = 'down'
                     else:
                         direction = 'up'
-                elif event.key == pygame.K_s:
+                elif event.key == pygame.K_s or pygame.K_DOWN:
                     if direction == 'up':
                         direction = 'up'
                     else:
                         direction = 'down'
-                elif event.key == pygame.K_d:
+                elif event.key == pygame.K_d or pygame.K_RIGHT:
                     if direction == 'left':
                         direction = 'left'
                     else:
