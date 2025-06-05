@@ -67,34 +67,34 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     if direction == 'right':
-                        direction == 'right'
+                        direction = 'right'
                     else:
                         direction = 'left'
                 elif event.key == pygame.K_w:
                     if direction == 'down':
-                        direction == 'down'
+                        direction = 'down'
                     else:
                         direction = 'up'
                 elif event.key == pygame.K_s:
                     if direction == 'up':
-                        direction == 'up'
+                        direction = 'up'
                     else:
                         direction = 'down'
                 elif event.key == pygame.K_d:
                     if direction == 'left':
-                        direction == 'left'
+                        direction = 'left'
                     else:
                         direction = 'right'
 
-            elif start:
+            if start:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        start == False
+                        start = False
 
-            elif dead:
+            if dead:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         apple = Apple(random.randrange(0, width, 20), random.randrange(0, height, 20), 20, (255, 0 ,0))
@@ -227,7 +227,7 @@ def main():
             screen.fill((0, 0, 0))
             screen.blit(nameSurface, nameRect)
             screen.blit(startSurface, startRect)
-        if dead:
+        elif dead:
             screen.fill((0, 0, 0))
             screen.blit(overTopSurface, overTopRect)
             screen.blit(overBotSurface, overBotRect)
